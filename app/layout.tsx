@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   title: "Ticiana - 15 Primaveras",
   description: "Te invito a celebrar mis 15 años con una fiesta inolvidable.",
   generator: "v0.app",
+  metadataBase: new URL("https://tici-tarjeta.vercel.app"),
   openGraph: {
     title: "Ticiana - 15 Primaveras",
     description: "Te invito a celebrar mis 15 años con una fiesta inolvidable. ¡Confirmá tu asistencia!",

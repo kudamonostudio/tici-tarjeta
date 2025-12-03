@@ -1,7 +1,15 @@
 "use client"
 
-import { useState } from "react"
-import { ChevronLeft, ChevronRight, X } from "lucide-react"
+import { useState, useEffect } from "react"
+import { X } from "lucide-react"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel"
 
 export function PhotoGallery() {
   // Imágenes numeradas desde 4 hasta 34 (excluyendo las que faltan)
@@ -12,24 +20,48 @@ export function PhotoGallery() {
     alt: `Foto ${num}`
   }))
 
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
+  const [selectedIndex, setSelectedIndex] = useState(0)
   const [isOpen, setIsOpen] = useState(false)
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+
+  // Bloquear scroll cuando la galería está abierta
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
+
+  // Sincronizar el índice actual del carousel
+  useEffect(() => {
+    if (!api) return
+
+    setCurrent(api.selectedScrollSnap())
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap())
+    })
+  }, [api])
+
+  // Cuando se abre la galería, ir a la imagen seleccionada
+  useEffect(() => {
+    if (api && isOpen) {
+      api.scrollTo(selectedIndex)
+    }
+  }, [api, isOpen, selectedIndex])
 
   const openGallery = (index: number) => {
-    setCurrentPhotoIndex(index)
+    setSelectedIndex(index)
     setIsOpen(true)
   }
 
   const closeGallery = () => {
     setIsOpen(false)
-  }
-
-  const goToPrevious = () => {
-    setCurrentPhotoIndex((prev) => (prev === 0 ? photos.length - 1 : prev - 1))
-  }
-
-  const goToNext = () => {
-    setCurrentPhotoIndex((prev) => (prev === photos.length - 1 ? 0 : prev + 1))
   }
 
   return (
@@ -60,32 +92,41 @@ export function PhotoGallery() {
             <X className="w-8 h-8" />
           </button>
 
-          {/* Botón anterior */}
-          <button
-            onClick={goToPrevious}
-            className="absolute left-4 z-50 text-white/70 hover:text-white p-2"
+          {/* Carousel */}
+          <Carousel
+            setApi={setApi}
+            className="w-full max-w-7xl"
+            opts={{
+              loop: true,
+              startIndex: selectedIndex,
+            }}
           >
-            <ChevronLeft className="w-12 h-12" />
-          </button>
-
-          {/* Imagen */}
-          <img
-            src={photos[currentPhotoIndex].url}
-            alt={photos[currentPhotoIndex].alt}
-            className="max-h-screen max-w-screen object-contain"
-          />
-
-          {/* Botón siguiente */}
-          <button
-            onClick={goToNext}
-            className="absolute right-4 z-50 text-white/70 hover:text-white p-2"
-          >
-            <ChevronRight className="w-12 h-12" />
-          </button>
+            <CarouselContent>
+              {photos.map((photo, index) => (
+                <CarouselItem key={index}>
+                  <div className="flex items-center justify-center h-screen px-16">
+                    <img
+                      src={photo.url}
+                      alt={photo.alt}
+                      className="max-h-screen max-w-full object-contain select-none"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious 
+              variant="ghost"
+              className="left-4 h-12 w-12 text-white/70 hover:text-white hover:bg-white/10 border-0" 
+            />
+            <CarouselNext 
+              variant="ghost"
+              className="right-4 h-12 w-12 text-white/70 hover:text-white hover:bg-white/10 border-0" 
+            />
+          </Carousel>
 
           {/* Contador */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/70 text-sm">
-            {currentPhotoIndex + 1} / {photos.length}
+            {current + 1} / {photos.length}
           </div>
         </div>
       )}

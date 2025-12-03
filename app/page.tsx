@@ -281,6 +281,7 @@ export default function WeddingPage() {
           <h2 className="text-3xl md:text-4xl font-light tracking-widest mb-6 text-[#1976d2]">
             EXTERIORES
           </h2>
+          <p className="text-[#1976d2]">Da click en una imagen para abrir la galería!</p>
         </div>
         <PhotoGallery />
       </section>
