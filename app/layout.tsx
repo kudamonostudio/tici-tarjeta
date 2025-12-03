@@ -22,9 +22,29 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: "Mariana & Martín - Nuestra Boda",
-  description: "Te invitamos a celebrar nuestra boda el 6 de Diciembre",
+  title: "Ticiana - 15 Primaveras",
+  description: "Te invito a celebrar mis 15 años con una fiesta inolvidable.",
   generator: "v0.app",
+  openGraph: {
+    title: "Ticiana - 15 Primaveras",
+    description: "Te invito a celebrar mis 15 años con una fiesta inolvidable. ¡Confirmá tu asistencia!",
+    images: [
+      {
+        url: "/00.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Ticiana - 15 hermosas Primaveras",
+      },
+    ],
+    locale: "es_UY",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ticiana - 15 Primaveras",
+    description: "Te invito a celebrar mis 15 años con una fiesta inolvidable. ¡Confirmá tu asistencia!",
+    images: ["/00.jpg"],
+  },
   icons: {
     icon: [
       {
