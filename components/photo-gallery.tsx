@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/carousel"
 
 export function PhotoGallery() {
-  // Imágenes numeradas desde 4 hasta 34 (excluyendo las que faltan)
-  const photoNumbers = [4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 33, 34]
+  // Imágenes numeradas desde 2 hasta 34 (excluyendo las que faltan)
+  const photoNumbers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 33, 34]
   
   const photos = photoNumbers.map(num => ({
     url: `/${num}.jpg`,
